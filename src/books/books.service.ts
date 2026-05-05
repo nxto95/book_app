@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from '../entities';
-import { Repository } from 'typeorm';
+import { Repository, Not, IsNull } from 'typeorm';
 import { CreateBookDto, UpdateBookDto } from '../dtos';
 
 @Injectable()
@@ -58,6 +58,72 @@ export class BooksService {
       if (error instanceof HttpException) throw error;
       this.logger.error(error);
       throw new InternalServerErrorException('error updating the book');
+    }
+  }
+
+  async restore(userId: string, bookId: string) {
+    try {
+      const result = await this.bookRepository.restore({
+        id: bookId,
+        userId,
+      });
+
+      if (result.affected === 0) {
+        throw new NotFoundException('book not found in trash');
+      }
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.logger.error(error);
+      throw new InternalServerErrorException('error restoring the book');
+    }
+  }
+  async getAll(userId: string) {
+    try {
+      const [books, count] = await this.bookRepository.findAndCount({
+        where: {
+          userId,
+        },
+      });
+      if (!books || count === 0)
+        throw new NotFoundException('user has no books yet');
+      return { books, count };
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.logger.error(error);
+      throw new InternalServerErrorException('error fetching books');
+    }
+  }
+
+  async getOne(userId: string, bookId: string) {
+    try {
+      const book = await this.bookRepository.findOne({
+        where: { id: bookId, userId },
+      });
+      if (!book) throw new NotFoundException('book not found');
+      return book;
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.logger.error(error);
+      throw new InternalServerErrorException('error fetching book');
+    }
+  }
+
+  async getDeleted(userId: string) {
+    try {
+      const [books, count] = await this.bookRepository.findAndCount({
+        where: {
+          userId,
+          deletedAt: Not(IsNull()),
+        },
+        withDeleted: true,
+      });
+      if (!books || count === 0)
+        throw new NotFoundException('user has no books yet');
+      return { books, count };
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      this.logger.error(error);
+      throw new InternalServerErrorException('error fetching deleted book');
     }
   }
 }
