@@ -5,6 +5,8 @@ import { UsersModule } from './users/users.module';
 import { BooksModule } from './books/books.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
+import { APP_GUARD } from '@nestjs/core';
+import { IsBlockedGuard } from './auth/guards/blocked.guard';
 
 @Module({
   imports: [
@@ -30,6 +32,12 @@ import { AdminDashboardModule } from './admin-dashboard/admin-dashboard.module';
     BooksModule,
     AuthModule,
     AdminDashboardModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: IsBlockedGuard,
+    },
   ],
 })
 export class AppModule {}

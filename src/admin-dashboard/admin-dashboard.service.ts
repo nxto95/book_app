@@ -69,7 +69,6 @@ export class AdminDashboardService {
     try {
       const result = await this.bookRepository.restore({
         id: bookId,
-        deletedAt: Not(IsNull()),
       });
       if (result.affected === 0)
         throw new NotFoundException('book not found or not deleted already');
@@ -84,7 +83,6 @@ export class AdminDashboardService {
     try {
       const result = await this.userRepository.restore({
         id: userId,
-        deletedAt: Not(IsNull()),
       });
       if (result.affected === 0)
         throw new NotFoundException('user not found or not deleted already');

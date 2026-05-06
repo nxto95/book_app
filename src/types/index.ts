@@ -22,3 +22,4 @@ export interface IRefreshStrategyUser {
 }
 
 export const USER_ROLE_KEY = 'user_role';
+export const PUBLIC_ROUTE_KEY = 'public_route';

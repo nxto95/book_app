@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
   IsStrongPassword,
+  Length,
 } from 'class-validator';
 
 function NormalizeString() {
@@ -18,8 +19,8 @@ function NormalizeString() {
 export class RegisterDto {
   @NormalizeString()
   @IsString()
-  @IsOptional()
-  username?: string;
+  @Length(2, 64)
+  username: string;
   @NormalizeString()
   @IsEmail()
   email: string;
@@ -34,6 +35,18 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   confirmPassword: string;
+}
+
+export class UpdateUserDto {
+  @NormalizeString()
+  @IsString()
+  @Length(2, 64)
+  @IsOptional()
+  username?: string;
+  @NormalizeString()
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 }
 
 export class CreateBookDto {
@@ -58,3 +71,20 @@ export class CreateBookDto {
 }
 
 export class UpdateBookDto extends PartialType(CreateBookDto) {}
+
+export class ChangePasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  oldPassword: string;
+  @IsStrongPassword({
+    minLength: 8,
+    minLowercase: 0,
+    minUppercase: 0,
+    minNumbers: 0,
+    minSymbols: 0,
+  })
+  newPassword: string;
+  @IsString()
+  @IsNotEmpty()
+  confirmPassword: string;
+}

@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { AdminDashboardService } from './admin-dashboard.service';
 import { AccessGuard, RoleGuard } from '../auth/guards';
-import { URole } from '../auth/decorators/user-role.decorator';
 import { UserRole } from '../types';
+import { URole } from '../auth/decorators';
 
 @Controller('admin/dashboard')
 @UseGuards(AccessGuard, RoleGuard)

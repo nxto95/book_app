@@ -10,9 +10,8 @@ import {
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { AccessGuard, RoleGuard } from '../auth/guards';
-import { URole } from '../auth/decorators/user-role.decorator';
 import { type IAccessStrategyUser, UserRole } from '../types';
-import { CurrentUser } from '../auth/decorators';
+import { CurrentUser, URole } from '../auth/decorators';
 import { CreateBookDto, UpdateBookDto } from '../dtos';
 
 @Controller('books')

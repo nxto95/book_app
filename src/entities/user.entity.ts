@@ -6,7 +6,7 @@ import { UserRole } from '../types';
 export class User extends TimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar' })
   @Index('unique_username', { unique: true })
   username: string;
   @Column({ type: 'varchar' })

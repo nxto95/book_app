@@ -16,18 +16,20 @@ import type {
   ILocalStrategyUser,
   IRefreshStrategyUser,
 } from '../types';
-import { CurrentUser } from './decorators';
+import { CurrentUser, PublicRoute } from './decorators';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @PublicRoute()
   async register(@Body() dto: RegisterDto) {
     return await this.authService.register(dto);
   }
 
   @Post('login')
+  @PublicRoute()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalGuard)
   async login(@CurrentUser() user: ILocalStrategyUser) {
