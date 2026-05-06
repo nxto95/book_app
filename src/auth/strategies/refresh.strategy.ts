@@ -6,7 +6,7 @@ import { IJwtPayload, IRefreshStrategyUser } from '../../types';
 import { Request } from 'express';
 
 @Injectable()
-export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
+export class RefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
   constructor(config: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -18,4 +18,6 @@ export class User extends TimeStamps {
   password: string;
   @Column({ type: 'text', nullable: true, select: false })
   refreshTokens: string | null;
+  @Column({ type: 'boolean', default: false })
+  isBlocked: boolean;
 }

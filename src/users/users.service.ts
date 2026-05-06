@@ -49,7 +49,13 @@ export class UsersService {
   async findByEmailForAuth(email: string): Promise<User | null> {
     return await this.userRepository.findOne({
       where: { email },
-      select: { id: true, password: true, role: true, username: true },
+      select: {
+        id: true,
+        password: true,
+        role: true,
+        username: true,
+        isBlocked: true,
+      },
     });
   }
 
@@ -60,6 +66,7 @@ export class UsersService {
         id: true,
         role: true,
         refreshTokens: true,
+        isBlocked: true,
       },
     });
   }
@@ -77,7 +84,7 @@ export class UsersService {
   }
 
   async getUserById(id: string) {
-    return await this.userRepository.findOneBy({ id });
+    return await this.userRepository.findOne({ where: { id } });
   }
 
   //   helper functions
